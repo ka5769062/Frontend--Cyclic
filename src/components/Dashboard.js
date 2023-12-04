@@ -1,18 +1,17 @@
-"use client";
+'use client'
 import { useContext } from "react";
 import React, { useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { LoginContext } from "./contextProvider/context";
 
 const Dashboard = () => {
 
   const {loginData, setLoginData} = useContext(LoginContext)
-  
+
   const router = useRouter()
+
   const dashboardValid = async () => {
-    
     try{
       let token = localStorage.getItem("userstoken");
     
@@ -26,14 +25,13 @@ const Dashboard = () => {
           },
         }
       );
-
       const data = await myDashboardApi.json();
 
       if (data.status === 401) {
          router.push("/error")
       } else {
         console.log("user verifyied");
-        setLoginData(data)
+        setLoginData(data.validUserOne)
         router.push("/dashboard")
       }
     } 
@@ -58,7 +56,7 @@ const Dashboard = () => {
           alt="Picture of the author"
         />
         <h1 className="text-3xl font-semibold">
-          User Email:
+          User Email:{loginData ? loginData.email:""}
         </h1>
       </div>
     </div>

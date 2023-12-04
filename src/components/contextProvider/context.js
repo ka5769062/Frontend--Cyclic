@@ -4,12 +4,14 @@ import { useState } from "react";
 
 export const LoginContext = createContext("");
 
-const context = async({ children }) => {
+const Context = ({ children }) => {
   
-  const [loginData, setLoginData] = useState("");
-
+  const [loginData,setLoginData] = useState("");
+        
+  
   return (
-   <>
+    <>
+  
    <LoginContext.Provider value={{loginData, setLoginData}}>
       {children}
    </LoginContext.Provider>
@@ -17,4 +19,4 @@ const context = async({ children }) => {
   );
 };
 
-export default context;
+export default Context;

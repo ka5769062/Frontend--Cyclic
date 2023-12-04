@@ -3,7 +3,8 @@ import React from "react";
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
   const [passShow, setPassShow] = useState(false);
@@ -26,20 +27,26 @@ const Login = () => {
 
   const addUserData = async (e) => {
     e.preventDefault();
-    
+
     const { email, password } = inputVal;
-   
 
     if (email === "") {
-      alert("please enter your email");
+      toast.error("email is required!", {
+        position: "top-center",
+      });
     } else if (!email.includes("@")) {
-      alert("enter valid email");
+      toast.warning("include @ in your email!", {
+        position: "top-center",
+      });
     } else if (password === "") {
-      alert("please enter your password");
+      toast.error("password is required!", {
+        position: "top-center",
+      });
     } else if (password.length < 8) {
-      alert("password must be 8 char");
+      toast.error("password must be 8 char", {
+        position: "top-center",
+      });
     } else {
-      // console.log("login succesfully");
       const data = await fetch("http://localhost:5000/api/auth/login", {
         method: "POST",
         headers: {
@@ -52,14 +59,16 @@ const Login = () => {
       });
       const res = await data.json();
       if (res) {
-        alert("user login sucessful");
-        
-        localStorage.setItem("userstoken",res.token)
-        router.push('/dashboard')
+        toast.success("Login Successfull💋😘😜!", {
+          position: "top-center",
+        });
+
+        localStorage.setItem("userstoken", res.token);
+        setTimeout(() => {
+          router.push("/dashboard");
+        }, 3000);
+
         setInputVal({ ...inputVal, email: "", password: "" });
-
-
-
       }
     }
   };
@@ -106,6 +115,7 @@ const Login = () => {
                 onClick={addUserData}
                 className="bg-purple-900 hover:bg-purple-500 w-full text-white rounded h-11 mt-5"
               >
+                <ToastContainer />
                 Login
               </button>
               <p className="mt-5">
